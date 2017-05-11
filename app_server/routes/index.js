@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var ctrlMain = require('../controllers/main')
+var ctrlBlocks = require('../controllers/blocks');
+var ctrlOthers = require('../controllers/others');
 
 /* GET home page. */
-router.get('/', ctrlMain.index);
+router.get('/', ctrlBlocks.blocklist);
+router.get('/block', ctrlBlocks.blockInfo);
+router.get('/block/edit', ctrlBlocks.addBlock);
+
+/* Other pages */
+router.get('/about', ctrlOthers.about);
 
 module.exports = router;
-
-var homepageController = function (req, res) {
-res.render('index', { title: 'Express' });
-};
-/* GET home page. */
-router.get('/', homepageController);

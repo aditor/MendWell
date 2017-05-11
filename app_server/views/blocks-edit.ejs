@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header"><a class="navbar-brand" href="/">MendWell</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li><a href="/about/">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+</html>
+
+  <div class="page-header" id="banner">
+    <div class="row">
+      <div class="col-lg-6">
+        <h1>Recent Days <br><small>&nbsp;Track your medications and wellbeing over the past few days</small></h1>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-8">
+      <div class="row list-group">
+        <div class="col-xs-12 list-group-item">
+          <h3> 
+            <a href="/block">Date: 05/08/2017</a>
+          </h3>
+
+          <div style="clear: left;">
+            <button onclick="listFunction()">Add a Row</button>
+            <button id="clear" onclick="clearList()">Clear</button>
+            <!-- ADD A SAVE METHOD HERE -->
+             <button id="save" >Save</button>
+          </div>
+
+          <h4>
+            Medications
+          </h4>
+                  <ul id="mainList" style="list-style-type: none";>
+                      <li>
+                          <div id = "bunch" style="clear: left;">
+
+                              <div class="form-group" style="float: left">
+                                <label class="control-label" for="focusedInput" style="float: left">Names</label>
+                                <input class="form-control" id="focusedInput" type="text" value="" style="float: right">
+                              </div>  
+
+                               <div class="form-group" style="float: left">
+                                <label class="control-label" for="focusedInput" style="float: left">Dosage</label>
+                                <input class="form-control" id="focusedInput" type="text" value="">
+                              </div>  
+
+                           
+                          </div>
+                      </li>
+                  </ul>
+           <small>&nbsp;</small>
+          
+          <h4 style="clear: left";>Body Status</h4>
+          <p><span class="label label-warning">Left leg</span>
+            &nbsp;<span class="label label-warning">Right arm</span>
+            &nbsp;<span class="label label-warning">Head</span>&nbsp;
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="container">
+      <footer>
+        <div class="row">
+          <div class="col-xs-12"><small>&copy; Adi Kamath 2017</small></div>
+        </div>
+      </footer>
+    </div>
+
+
+
+    <script>
+      function listFunction() {
+              var lis = document.getElementById("mainList");
+              var singleRow = document.getElementById("bunch");
+              var duplicated = singleRow.cloneNode(true);
+              var li = document.createElement('li');
+              li.appendChild(duplicated)
+              lis.appendChild(li);
+      }
+
+
+      function clearList(){
+        var root = document.getElementById("mainList");
+        var savedBunch = document.getElementById("bunch");
+        root.innerHTML = '';
+        var entry = document.createElement('li');
+        entry.appendChild(savedBunch);
+        root.appendChild(entry);
+    }
+
+
+    </script>
+
+  </body>
