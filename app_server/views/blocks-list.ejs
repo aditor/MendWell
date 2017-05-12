@@ -11,7 +11,8 @@
 
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
-        <div class="navbar-header"><a class="navbar-brand" href="/">MendWell</a>
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/"><%= pageHeader.title %></a>
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
@@ -44,7 +45,7 @@
           <h3> 
             <a href="/block">Date: 05/08/2017</a>
           </h3>
-          <h4>Medications
+          <h4>Medications</h4>
                           <table class="table table-striped table-hover ">
                             <thead>
                               <tr>
@@ -53,6 +54,27 @@
                                 <th class="text-success">Dosage</th>
                               </tr>
                             </thead>
+                            <tbody>
+                              
+                              <% day.forEach(function(singleDay) { %>
+                                <tr>
+                                  <!-- NEED ANOTHER FOR LOOP INSIDE THIS FOR EACH MEDICINE lol -->
+                                  <td>singleDay</td>
+                                  <td>1</td>
+                                </tr>
+                              <% }); %>
+
+                            </tbody>
+                            
+
+
+
+
+                              
+
+
+
+                            
                             <tbody>
                               <tr>
                                 <td>1</td>
@@ -74,7 +96,7 @@
 
 
             <small>&nbsp;</small>
-          </h4>
+        
           <h4>Body Status
           </h4>
           <p><span class="label label-warning">Left leg</span>
