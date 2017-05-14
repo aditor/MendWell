@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="../../javascripts/jquery-3.2.1.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../javascripts/jquery.imagemapster.js"></script>
+
   </head>
 
   <body>
@@ -22,8 +27,6 @@
       </div>
     </div>
 
-    <script src="/javascripts/jquery-1.11.1.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
 </html>
 
   <div class="page-header" id="banner">
@@ -39,15 +42,15 @@
     <div class="col-xs-12 col-sm-8">
       <div class="row list-group">
         <div class="col-xs-12 list-group-item">
-          <h3> 
+          <h4> 
             <a href="/block">Date: 05/08/2017</a>
-          </h3>
+          </h4>
 
           <div style="clear: left;">
-            <button onclick="listFunction()">Add a Row</button>
-            <button id="clear" onclick="clearList()">Clear</button>
+            <button onclick="listFunction()" class="btn btn-info">Add a Row</button>
+            <button id="clear" onclick="clearList()" class="btn btn-warning">Clear</button>
             <!-- ADD A SAVE METHOD HERE -->
-             <button id="save" >Save</button>
+             <button id="save" class="btn btn-success">Save</button>
           </div>
 
           <h4>
@@ -58,12 +61,12 @@
                           <div id = "bunch" style="clear: left;">
 
                               <div class="form-group" style="float: left">
-                                <label class="control-label" for="focusedInput" style="float: left">Names</label>
-                                <input class="form-control" id="focusedInput" type="text" value="" style="float: right">
+                                <label class="control-label" for="focusedInput">Name</label>
+                                <input class="form-control" id="focusedInput" type="text" value="">
                               </div>  
 
                                <div class="form-group" style="float: left">
-                                <label class="control-label" for="focusedInput" style="float: left">Dosage</label>
+                                <label class="control-label" for="focusedInput">Dosage</label>
                                 <input class="form-control" id="focusedInput" type="text" value="">
                               </div>  
 
@@ -75,13 +78,15 @@
           
           <h4 style="clear: left";>Body Status</h4>
           <p><span class="label label-warning">Left leg</span>
-            &nbsp;<span class="label label-warning">Right arm</span>
-            &nbsp;<span class="label label-warning">Head</span>&nbsp;
+            <span class="label label-warning">Right arm</span>
+            <span class="label label-warning">Head</span>
           </p>
         </div>
       </div>
     </div>
   </div>
+
+  <img type="image" src="../../images/body.jpg" style="width:304px;height:500px;"> </img>
 
     <div class="container">
       <footer>
@@ -91,9 +96,9 @@
       </footer>
     </div>
 
-
-
     <script>
+
+
       function listFunction() {
               var lis = document.getElementById("mainList");
               var singleRow = document.getElementById("bunch");
