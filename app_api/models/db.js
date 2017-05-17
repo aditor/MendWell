@@ -64,4 +64,4 @@ process.exit(0);
 });
 });
 
-require('../controllers/blocks.js');
+require('./days.js');
