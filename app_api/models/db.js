@@ -5,7 +5,7 @@ var gracefulShutdown;
 //only I get access to login credentials, dont wanna make it public
 var dbURI = 'mongodb://localhost/MendWell';
 if (process.env.NODE_ENV === 'production') {
-dbURI = process.env.MONGOLAB_URI;
+	dbURI = process.env.MONGOLAB_URI;
 }
 mongoose.connect(dbURI);
 
