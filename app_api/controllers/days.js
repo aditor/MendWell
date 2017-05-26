@@ -1,17 +1,46 @@
 var mongoose = require('mongoose');
 var Day = mongoose.model('Day');
+var request = require('request');
+
 
 var sendJsonResponse = function(res, status, content) {
 	res.status(status);
 	res.json(content);
 };
 
+module.exports.sendAilments = function(req, res){
 
-//might not need to create a day, only UPDATE one
-/*module.exports.daysCreate = function (req, res) {
-	sendJsonResponse(res, 200, {"status":"success"});
-};
-*/
+	function callback(error, response, body) {
+	  if (!error && response.statusCode == 200) {
+	    res.write(JSON.stringify(response));
+      }
+	}
+
+	var options = {
+	  url: 'https://api.infermedica.com/v2/diagnosis',
+	  method: 'POST',
+	  headers: {
+	    'App-Id': 'a0688df7',
+	    'App-Key': 'b12e2d04580c6ecfc40c89764e2eaf32'
+	  },
+	  json: true,
+	  body:    {
+					"sex": "male",
+				    "age": 30,
+				    "evidence": [
+				      {"id": "s_1193", "choice_id": "present"},
+				      {"id": "s_488", "choice_id": "present"},
+				      {"id": "s_418", "choice_id": "present"}
+				    ] 
+				}
+	};
+	request(options, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        // Print out the response body
+        console.log(body);
+    }
+})
+}
 
 //sort by date
 module.exports.listDays = function (req, res) {
