@@ -76,6 +76,7 @@ module.exports.translateSymptoms = function(req, res){
 			request(options, function (error, response, body) {
 			    if (!error && response.statusCode == 200) {
 			        // Print out the response body
+			        	sendJsonResponse(res, 200, body)
 			 			        console.log(body);
 			    }
 			})
