@@ -3,7 +3,7 @@ var router = express.Router();
 var ctrlDays = require('../controllers/days');
 
 router.get('/days', ctrlDays.listDays);
-router.get('/morning', ctrlDays.translateSymptoms);
+router.get('/morning', ctrlDays.osmosize);
 /*router.post('/days', ctrlDays.daysCreate);*/
 router.get('/days/:dayid', ctrlDays.daysReadOne);
 router.put('/days/:dayid', ctrlDays.daysUpdateOne);
