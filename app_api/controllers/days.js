@@ -83,7 +83,7 @@ module.exports.translateSymptoms = function(req, res){
 	})
 }
 
-module.exports.osmosize = function (req, res) {
+/*module.exports.osmosize = function (req, res) {
 	osmosis
 		.get('http://www.webmd.com/drugs/2/conditions/index')
 		.submit('//button[@class="search-box-submit"]', ['diabetes'])
@@ -91,7 +91,7 @@ module.exports.osmosize = function (req, res) {
 		.data(function(results) { //output
 		    console.log(results);
 		 })
-}
+}*/
 //sort by date
 module.exports.listDays = function (req, res) {
 	Day.find({}).sort('-date').exec(function(err, docs) {
