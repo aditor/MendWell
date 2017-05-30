@@ -84,15 +84,57 @@ module.exports.translateSymptoms = function(req, res){
 	})
 }
 
-/*module.exports.osmosize = function (req, res) {
+module.exports.osmosize = function (req, res) {
 	osmosis
-		.get('http://www.webmd.com/drugs/2/conditions/index')
-		.submit('//button[@class="search-box-submit"]', ['diabetes'])
-		.set('shit')
-		.data(function(results) { //output
+/*	.get('www.craigslist.org/about/sites')
+    .find('h1 + div')
+    .set('location')
+.follow('@href')
+.find('header + div + div li > a')
+.set('category')
+.follow('@href')
+.paginate('.totallink + a.button.next:first')
+.find('p > a')
+.follow('@href')
+    .data(function(results) { //output
+			sendJsonResponse(res, 200, results);
 		    console.log(results);
 		 })
-}*/
+		.log(console.log)
+		.error(console.log)
+		.debug(console.log)*/
+		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + 'headache')
+		.find('p + ul')
+		.then(function(context, data, next) {
+		  var items = context.find('li');
+		  if(items){
+		  	console.log("HELLO")
+		  }
+		  console.log(Object.keys(items));
+		  items.forEach(function(item) {
+		        next(item, data);
+		  })
+		})
+		.set('condition')
+		.follow('@href')
+		.find('p + table')
+		.then(function(context, data, next) {
+		  var items = context.find('tr');
+		  console.log(Object.keys(items));
+		  items.forEach(function(item) {
+		        next(item, data);
+		  })
+		})
+		.set('medication')
+		.data(function(results) { //output
+		    console.log(results);
+			//sendJsonResponse(res, 200, results);
+		 })
+		.log(console.log)
+		.error(console.log)
+		.debug(console.log)
+}
+
 //sort by date
 module.exports.listDays = function (req, res) {
 	Day.find({}).sort('-date').exec(function(err, docs) {
