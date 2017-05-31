@@ -6,8 +6,10 @@ module.exports.blocklist = function(req, res){
 										strapline: 'Track your medications and wellbeing'
 							    }, 
 							    days: [{date: '05/08/2017',
-							    		medications:[
-								    					  {
+							    		conditions:[
+							    			{name: "Headache",
+							    			 meds: [
+							    			 		      {
 								    						medName:'Tylenol',
 								    						medDosage: '3 pills/day'
 								    					  },
@@ -18,46 +20,45 @@ module.exports.blocklist = function(req, res){
 								    					  {
 								    					  	medName:'Buckleys',
 								    						medDosage: '2 spoonfulls/day'
-								    					  }
-							    		],
-							    		bodyStatus:[
-							    					{part: 'Left leg',
-							    					 condition: 3
-							    					},
-							    					{part: 'Right arm',
-							    					 condition: 6
-							    					},
-							    					{part: 'Head',
-							    					 condition: 9
-							    					}
-							    		]
-							    },
-							    {		date: '05/07/2017',
-							    		medications:[
-								    					  {
-								    						medName:'Adderall',
-								    						medDosage: '5 pills/day'
-								    					  },
-								    					  {
+								    					  }	],
+							    			 severity: 5},
+							    			{name: "Dizziness",
+							    			 meds: [
+							    			 		    {
 								    					  	medName:'Percocet',
+								    						medDosage: '1 pills/day'
+								    					},
+								    					{
+								    					  	medName:'Valium',
+								    						medDosage: '3 spoonfulls/day'
+								    					}],
+							    			 severity: 8}
+							    		]},
+
+							    		{date: '05/09/2017',
+							    		conditions:[
+							    			{name: "Vomitting",
+							    			 meds: [
+							    			 		      {
+								    						medName:'Buckleys',
 								    						medDosage: '1 pills/day'
 								    					  },
 								    					  {
-								    					  	medName:'Valium',
-								    						medDosage: '3 spoonfulls/day'
-								    					  }
-							    		],
-							    		bodyStatus:[
-							    					{part: 'Left arm',
-							    					 condition: 4
-							    					},
-							    					{part: 'Stomach',
-							    					 condition: 9
-							    					}
-							    		]
-							    }] 
-							  }
-			   ); 
+								    					  	medName:'Erythropoeitin',
+								    						medDosage: '2 pills/day'
+								    					  }],
+							    			 severity: 9},
+							    			{name: "Diarreah",
+							    			 meds: [
+							    			 		    {
+								    					  	medName:'Antihistamine',
+								    						medDosage: '1 pills/day'
+								    					}],
+							    			 severity: 3}
+							    		]}	
+							    ]	
+							  }						    		     
+			  ); 
 };
 
 /* GET 'block info' page */
@@ -67,9 +68,11 @@ module.exports.blockInfo = function(req, res){
 										title: 'MendWell',
 										strapline: 'Track your medications and wellbeing'
 							    }, 
-							    day : {date: '05/08/2017',
-							    		medications:[
-								    					  {
+							    days: [{date: '05/08/2017',
+							    		conditions:[
+							    			{name: "Headache",
+							    			 meds: [
+							    			 		      {
 								    						medName:'Tylenol',
 								    						medDosage: '3 pills/day'
 								    					  },
@@ -80,20 +83,21 @@ module.exports.blockInfo = function(req, res){
 								    					  {
 								    					  	medName:'Buckleys',
 								    						medDosage: '2 spoonfulls/day'
-								    					  }
-							    		],
-							    		bodyStatus:[
-							    					{part: 'Left leg',
-							    					 condition: 3
-							    					},
-							    					{part: 'Right arm',
-							    					 condition: 6
-							    					},
-							    					{part: 'Head',
-							    					 condition: 9
-							    					}
-							    		]
-							    } 
+								    					  }	],
+							    			 severity: 5},
+							    			{name: "Dizziness",
+							    			 meds: [
+							    			 		    {
+								    					  	medName:'Percocet',
+								    						medDosage: '1 pills/day'
+								    					},
+								    					{
+								    					  	medName:'Valium',
+								    						medDosage: '3 spoonfulls/day'
+								    					}],
+							    			 severity: 8}
+							    		]}
+							    ]	
 							  });
 };
 
