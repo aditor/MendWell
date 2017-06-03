@@ -38,39 +38,7 @@
           <div class="col-xs-12 col-sm-6">
             
             <p><%= day.date %></p>
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <h2 class="panel-title">Medications</h2>
-              </div>
-              <div class="panel-body">
-                <table class="table table-striped table-hover">
-                            <thead>
-                              <tr>
-                                <th class="text-warning">Name</th>
-                                <th class="text-success">Dosage</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                               <% day.medications.forEach(function(eachMed) { %>
-                                      <tr>
-                                        <td><%= eachMed.medName %></td>
-                                        <td><%= eachMed.medDosage %></td>
-                                      </tr>
-                              <% }); %>  
-                            </tbody>
-                          </table> </div>
-            </div>
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <h2 class="panel-title">Body Status</h2>
-              </div>
-                <p> 
-                  <% day.bodyStatus.forEach(function(eachPart) { %>
-                          <span class="label label-warning"><%= eachPart.part %></span>        
-                          <!-- do something else here with the number or whatever status I want to show for that bodypart    -->
-                  <% }); %>
-                </p> 
-            </div>
+
           </div>
          
         </div>

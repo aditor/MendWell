@@ -98,7 +98,8 @@ module.exports.blockInfo = function(req, res){
 							    			 severity: 8}
 							    		]}
 							    ]	
-							  });
+							  }
+			   );
 };
 
 /* GET 'Add block' page */

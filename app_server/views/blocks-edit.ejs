@@ -54,20 +54,34 @@
                      <button id="save" class="btn btn-success">Save</button>
                   </div>
 
-                  <h4>Body Parts</h4>
+                  <h4>Condition</h4>
                   
                   <div class="form-group">
-                      <input class="form-control" id="focusedInput" type="text" placeholder="Enter body part" style="float: left">
-                      <a class="btn" href="/api/morning">Submit></a>
+                      <input class="form-control" id="condInput" type="text" placeholder="Enter your condition" style="float: left">
+                      <button class="btn btn-info" id="condSubmit" href="/api/morning" style="float: right;">Submit</button>
                   </div>  
 
 
-                  <p><span class="label label-warning">Left leg</span>
+                  <!-- copy of submit and form above -->
+                  <!-- <div class="form-group">
+                      <input class="form-control" id="focusedInput" type="text" placeholder="Enter your condition" style="float: left">
+                      <a class="btn btn-info" href="/api/morning" style="float: right;">Submit</a>
+                  </div>   -->
+
+
+
+
+
+
+
+                  <!-- the ORANGE little boxes I had before -->
+
+                  <!-- <p><span class="label label-warning">Left leg</span>
                     <span class="label label-warning">Right arm</span>
                     <span class="label label-warning">Head</span>
-                  </p>
+                  </p> -->
 
-                  <h4>
+                 <!--  <h4>
                     Medications
                   </h4>
                           <ul id="mainList" style="list-style-type: none" ;>
@@ -85,7 +99,7 @@
                                   </div>
                               </li>
                           </ul>
-                         
+                          -->
                 </div>
         </div>
       </div>
@@ -95,7 +109,11 @@
   
 
 
-<!--start -->
+  <table id="tblMeds" class="table table-striped table-hover ">
+   
+  </table>  
+
+
 
    <div class="container">
       <footer>
@@ -125,25 +143,50 @@
         root.appendChild(entry);
       }
 
-          function sendAilment(){
-            request.post(
-              'https://api.infermedica.com/v2/diagnosis',
-               {
-                "sex": "male",
-                  "age": 30,
-                  "evidence": [
-                    {"id": "s_1193", "choice_id": "present"},
-                    {"id": "s_488", "choice_id": "present"},
-                    {"id": "s_418", "choice_id": "present"}
-                  ]
-              },
-              function (error, response, body) {
-                  if (!error && response.statusCode == 200) {
-                      console.log(body)
-                  }
-              }
-            );
-          }
+      function generateTable(data){
+            var tbl_body = document.createElement("tbody");
+            tbl_body.setAttribute("id", "resultTable");
+            var odd_even = false;
+//            console.log("DATA", data);
+            $.each(data, function(){
+                var tbl_row = tbl_body.insertRow();
+                tbl_row.className = odd_even ? "odd" : "even";
+                $.each(this, function(k, v){
+                    var cell = tbl_row.insertCell();
+                    cell.appendChild(document.createTextNode(v.toString()));
+                })
+                odd_even = !odd_even;
+            })
+            var tab = document.getElementById("tblMeds");
+            tab.innerHTML = '';
+            tab.appendChild(tbl_body);
+    }
+
+      
+
+      $("#condSubmit").click(function(){
+        var tab = document.getElementById("tblMeds");
+        var text = document.getElementById("condInput").value;
+
+        if(tab != null){
+            tab.innerHTML = '';
+        }
+        $.ajax({
+            url: 'http://localhost:3000/api/morning',
+            type: 'post',
+//            data: JSON.stringify(query),
+            data: JSON.stringify({"stuff":text}),
+            dataType: 'json',
+            contentType: 'application/json'
+        }).done(function(data){
+          console.log(data)
+//            console.log("MAIN DATA", data)
+//            console.log("Response", data);
+            //generateTable(data.result);
+        }).fail(function(data){
+            console.error("ERROR - Failed:" + data);
+        });
+    })
 
 
     </script>

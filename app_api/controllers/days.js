@@ -9,8 +9,34 @@ var sendJsonResponse = function(res, status, content) {
 	res.json(content);
 };
 
+var osmosize = function (req, res, ailment) {
+	osmosis
+		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + ailment)
+		.find('p + ul')
+		.then(function(context, data, next) {
+		  var items = context.find('li');
+		  console.log(Object.keys(items));
+		  items.forEach(function(item) {
+		        next(item, data);
+		  })
+		})
+		.set('condition')
+		.follow('@href')
+		.set({'medication':['//td[1]']})
+		.data(function(results) { //output
+		    console.log(results/*[Object.keys(results)[0]]*/);
+			//sendJsonResponse(res, 200, results);
+		 })
+		.log(console.log)
+		.error(console.log)
+		.debug(console.log)
+}
+
 //input symptoms and get back the condition
 module.exports.translateSymptoms = function(req, res){
+	var reqparams = req.body["stuff"];
+	console.log(reqparams);
+	console.log(typeof(reqparams))
 	var options = {
 	  url: 'https://api.infermedica.com/v2/parse', 
 	  method: 'POST',
@@ -19,7 +45,7 @@ module.exports.translateSymptoms = function(req, res){
 	    'App-Key': 'b12e2d04580c6ecfc40c89764e2eaf32'
 	  },
 	  json: true,
-	  body: {"text": "Ankle swollen"}
+	  body: {"text": reqparams}
 	}
 
 	request(options, function (error, response, body) {
@@ -50,47 +76,17 @@ module.exports.translateSymptoms = function(req, res){
 			request(options, function (error, response, body) {
 			    if (!error && response.statusCode == 200) {
 			        // Print out the response body
+			        //return osmosize()
+			        	var condName = body["mentions"][0]["name"];
+			 			osmosize(req, res, condName);
 			        	sendJsonResponse(res, 200, body)
-			 			        console.log(body);
+			 			console.log(condName);
 			    }
 			})
 	    }
 	})
 }
 
-module.exports.osmosize = function (req, res) {
-	osmosis
-		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + 'headache')
-		.find('p + ul')
-		.then(function(context, data, next) {
-		  var items = context.find('li');
-		  if(items){
-		  	console.log("HELLO")
-		  }
-		  console.log(Object.keys(items));
-		  items.forEach(function(item) {
-		        next(item, data);
-		  })
-		})
-		.set('condition')
-		.follow('@href')
-		.find('p + table')
-/*		.then(function(context, data, next) {
-		  var items = context.find('tr');
-		  console.log(Object.keys(items));
-		  items.forEach(function(item) {
-		        next(item, data);
-		  })
-		})*/
-		.set('medication')
-		.data(function(results) { //output
-		    console.log(results);
-			//sendJsonResponse(res, 200, results);
-		 })
-		.log(console.log)
-		.error(console.log)
-		.debug(console.log)
-}
 
 //sort by date
 module.exports.listDays = function (req, res) {
