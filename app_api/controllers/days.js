@@ -3,18 +3,23 @@ var Day = mongoose.model('Day');
 var request = require('request');
 var osmosis = require('osmosis');
 
+var appId = 'a0688df7';
+var appKey = 'b12e2d04580c6ecfc40c89764e2eaf32';
+var FINAL = [];
+
 
 var sendJsonResponse = function(res, status, content) {
 	res.status(status);
 	res.json(content);
 };
 
-var osmosize = function (req, res, ailment) {
+var osmosize = function (res, ailment) {
 	osmosis
 		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + ailment)
 		.find('p + ul')
 		.then(function(context, data, next) {
 		  var items = context.find('li');
+		  var last = [];
 		  console.log(Object.keys(items));
 		  items.forEach(function(item) {
 		        next(item, data);
@@ -23,9 +28,17 @@ var osmosize = function (req, res, ailment) {
 		.set('condition')
 		.follow('@href')
 		.set({'medication':['//td[1]']})
+/*		.then(function(context, data, next){
+			console.log(Object.keys(data).length)
+
+
+
+
+		})*/
 		.data(function(results) { //output
-		    console.log(results/*[Object.keys(results)[0]]*/);
-			//sendJsonResponse(res, 200, results);
+			console.log(Object.keys(results).length)
+		    console.log("DONE")
+			sendJsonResponse(res, 200, results)
 		 })
 		.log(console.log)
 		.error(console.log)
@@ -41,8 +54,8 @@ module.exports.translateSymptoms = function(req, res){
 	  url: 'https://api.infermedica.com/v2/parse', 
 	  method: 'POST',
 	  headers: {
-	    'App-Id': 'a0688df7',
-	    'App-Key': 'b12e2d04580c6ecfc40c89764e2eaf32'
+	    'App-Id': appId,
+	    'App-Key': appKey
 	  },
 	  json: true,
 	  body: {"text": reqparams}
@@ -53,16 +66,14 @@ module.exports.translateSymptoms = function(req, res){
 	        // Print out the response body
 	        
 	        console.log(body[Object.keys(body)]);
-
 	        var symp = body[Object.keys(body)[0]][0].id;
 
-	        //var resp = sendAilments(req, res, symp);
 			var options2 = {
 			  url: 'https://api.infermedica.com/v2/diagnosis',
 			  method: 'POST',
 			  headers: {
-			    'App-Id': 'a0688df7',
-			    'App-Key': 'b12e2d04580c6ecfc40c89764e2eaf32'
+			    'App-Id': appId,
+	            'App-Key': appKey
 			  },
 			  json: true,
 			  body:    {
@@ -76,11 +87,8 @@ module.exports.translateSymptoms = function(req, res){
 			request(options, function (error, response, body) {
 			    if (!error && response.statusCode == 200) {
 			        // Print out the response body
-			        //return osmosize()
 			        	var condName = body["mentions"][0]["name"];
-			 			osmosize(req, res, condName);
-			        	sendJsonResponse(res, 200, body)
-			 			console.log(condName);
+			        	osmosize(res, condName)
 			    }
 			})
 	    }

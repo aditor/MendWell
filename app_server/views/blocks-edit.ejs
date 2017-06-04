@@ -110,7 +110,7 @@
 
 
   <table id="tblMeds" class="table table-striped table-hover ">
-   
+    
   </table>  
 
 
@@ -167,7 +167,6 @@
       $("#condSubmit").click(function(){
         var tab = document.getElementById("tblMeds");
         var text = document.getElementById("condInput").value;
-
         if(tab != null){
             tab.innerHTML = '';
         }
@@ -179,10 +178,12 @@
             dataType: 'json',
             contentType: 'application/json'
         }).done(function(data){
-          console.log(data)
+          console.log("FIRST");
+          console.log(data);
+          console.log("SECOND");
 //            console.log("MAIN DATA", data)
 //            console.log("Response", data);
-            //generateTable(data.result);
+          generateTable(data.medication);
         }).fail(function(data){
             console.error("ERROR - Failed:" + data);
         });
