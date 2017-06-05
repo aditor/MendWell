@@ -13,10 +13,43 @@ var sendJsonResponse = function(res, status, content) {
 	res.json(content);
 };
 
+
+var listRelated = function(res, ailment) {
+	osmosis
+		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + ailment)
+		.find('p + ul')
+		.then(function(context, data, next) {
+		  var items = context.find('li');
+		  var last = [];
+		  items.forEach(function(item) {
+		  		last.push({name: item.text(),
+		  					link: context.find() })
+		        next(item, data)
+		        console.log(last);
+		  })
+		})
+/*		.then(function(context, data, next){
+			console.log(Object.keys(data).length)
+		})*/
+/*		.data(function(results) { //output
+			console.log(results)
+		    console.log("DONE")
+			//sendJsonResponse(res, 200, results)
+		 })
+		.log(console.log)
+		.error(console.log)
+		.debug(console.log)*/
+		.done(function(results){
+			console.log("doneeee")
+			console.log(results)	
+		})
+}
+
 var osmosize = function (res, ailment) {
 	osmosis
 		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + ailment)
 		.find('p + ul')
+		
 		.then(function(context, data, next) {
 		  var items = context.find('li');
 		  var last = [];
@@ -30,10 +63,6 @@ var osmosize = function (res, ailment) {
 		.set({'medication':['//td[1]']})
 /*		.then(function(context, data, next){
 			console.log(Object.keys(data).length)
-
-
-
-
 		})*/
 		.data(function(results) { //output
 			console.log(Object.keys(results).length)
@@ -88,7 +117,7 @@ module.exports.translateSymptoms = function(req, res){
 			    if (!error && response.statusCode == 200) {
 			        // Print out the response body
 			        	var condName = body["mentions"][0]["name"];
-			        	osmosize(res, condName)
+			        	listRelated(res, condName)
 			    }
 			})
 	    }
