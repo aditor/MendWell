@@ -15,6 +15,7 @@ var sendJsonResponse = function(res, status, content) {
 
 
 var listRelated = function(res, ailment) {
+	var resultArr = [];
 	osmosis
 		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + ailment)
 		.find('p + ul')
@@ -22,34 +23,24 @@ var listRelated = function(res, ailment) {
 		  var items = context.find('li');
 		  var last = [];
 		  items.forEach(function(item) {
-		  		last.push({name: item.text(),
-		  					link: context.find() })
 		        next(item, data)
-		        console.log(last);
 		  })
 		})
-/*		.then(function(context, data, next){
-			console.log(Object.keys(data).length)
-		})*/
-/*		.data(function(results) { //output
-			console.log(results)
-		    console.log("DONE")
-			//sendJsonResponse(res, 200, results)
+		.set({'name': osmosis.set('name'),'link':'@href'})
+		.data(function(results) { //output
+		     resultArr.push(results)
 		 })
-		.log(console.log)
-		.error(console.log)
-		.debug(console.log)*/
-		.done(function(results){
-			console.log("doneeee")
-			console.log(results)	
+		.done(function(){
+			console.log(resultArr)
+			sendJsonResponse(res, 200, resultArr)	
 		})
 }
 
 var osmosize = function (res, ailment) {
+	var data = [];
 	osmosis
 		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + ailment)
 		.find('p + ul')
-		
 		.then(function(context, data, next) {
 		  var items = context.find('li');
 		  var last = [];
@@ -61,17 +52,12 @@ var osmosize = function (res, ailment) {
 		.set('condition')
 		.follow('@href')
 		.set({'medication':['//td[1]']})
-/*		.then(function(context, data, next){
-			console.log(Object.keys(data).length)
-		})*/
 		.data(function(results) { //output
-			console.log(Object.keys(results).length)
-		    console.log("DONE")
-			sendJsonResponse(res, 200, results)
+			data.push(results)
 		 })
-		.log(console.log)
-		.error(console.log)
-		.debug(console.log)
+		 .done(function(){
+		 	sendJsonResponse(res, 200, data)
+		 })
 }
 
 //input symptoms and get back the condition

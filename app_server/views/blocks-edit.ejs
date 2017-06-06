@@ -143,7 +143,7 @@
         root.appendChild(entry);
       }
 
-      function generateTable(data){
+      function generateMedList(data){
             var tbl_body = document.createElement("tbody");
             tbl_body.setAttribute("id", "resultTable");
             var odd_even = false;
@@ -153,6 +153,7 @@
                 tbl_row.className = odd_even ? "odd" : "even";
                 $.each(this, function(k, v){
                     var cell = tbl_row.insertCell();
+
                     cell.appendChild(document.createTextNode(v.toString()));
                 })
                 odd_even = !odd_even;
@@ -162,7 +163,27 @@
             tab.appendChild(tbl_body);
     }
 
-      
+      function generateButtonList(data){
+            var tbl_body = document.createElement("tbody");
+            tbl_body.setAttribute("id", "resultTable");
+            var odd_even = false;
+//            console.log("DATA", data);
+            $.each(data, function(index, value){
+                var tbl_row = tbl_body.insertRow();
+                //tbl_row.className = odd_even ? "odd" : "even";
+                console.log(value.name)
+                var cell = tbl_row.insertCell();
+                var butt = document.createElement("a");
+                butt.innerHTML = value.name.name;
+                butt.setAttribute("href", "http://www.webmd.com" + value.link);
+                cell.appendChild(butt);                      
+                //odd_even = !odd_even;
+            })
+            var tab = document.getElementById("tblMeds");
+            tab.innerHTML = '';
+            tab.appendChild(tbl_body);
+    }
+
 
       $("#condSubmit").click(function(){
         var tab = document.getElementById("tblMeds");
@@ -183,7 +204,7 @@
           console.log("SECOND");
 //            console.log("MAIN DATA", data)
 //            console.log("Response", data);
-          generateTable(data.medication);
+          generateButtonList(data);
         }).fail(function(data){
             console.error("ERROR - Failed:" + data);
         });
