@@ -175,7 +175,7 @@
                 var cell = tbl_row.insertCell();
                 var butt = document.createElement("a");
                 butt.innerHTML = value.name.name;
-                butt.setAttribute("href", "http://www.webmd.com" + value.link);
+                butt.setAttribute('onclick', "findMeds('" + value.link + "')");
                 cell.appendChild(butt);                      
                 //odd_even = !odd_even;
             })
@@ -209,6 +209,31 @@
             console.error("ERROR - Failed:" + data);
         });
     })
+
+      function findMeds(link){
+        console.log(link)
+        var tab = document.getElementById("tblMeds");
+        if(tab != null){
+            tab.innerHTML = '';
+        }
+        $.ajax({
+            url: 'http://localhost:3000/api/shit',
+            type: 'post',
+//            data: JSON.stringify(query),
+            data: JSON.stringify({"stuff":link}),
+            dataType: 'json',
+            contentType: 'application/json'
+        }).done(function(data){
+          console.log("FIRST");
+          console.log(data);
+          console.log("SECOND");
+//            console.log("MAIN DATA", data)
+//            console.log("Response", data);
+          generateMedList(data);
+        }).fail(function(data){
+            console.error("ERROR - Failed:" + data);
+        });
+    }
 
 
     </script>

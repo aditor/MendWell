@@ -4,6 +4,7 @@ var ctrlDays = require('../controllers/days');
 
 router.get('/days', ctrlDays.listDays);
 router.post('/morning', ctrlDays.translateSymptoms);
+router.post('/shit', ctrlDays.createMedList);
 /*router.post('/days', ctrlDays.daysCreate);*/
 router.get('/days/:dayid', ctrlDays.daysReadOne);
 router.put('/days/:dayid', ctrlDays.daysUpdateOne);

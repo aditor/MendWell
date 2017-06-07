@@ -36,10 +36,11 @@ var listRelated = function(res, ailment) {
 		})
 }
 
-var osmosize = function (res, ailment) {
+module.exports.createMedList = function (req, res, ailment) {
+	var reqparams = "http://www.webmd.com" + req.body["stuff"];
 	var data = [];
 	osmosis
-		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + ailment)
+		.get(reqparams)
 		.find('p + ul')
 		.then(function(context, data, next) {
 		  var items = context.find('li');
