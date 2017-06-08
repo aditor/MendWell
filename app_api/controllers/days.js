@@ -38,20 +38,11 @@ var listRelated = function(res, ailment) {
 
 module.exports.createMedList = function (req, res, ailment) {
 	var reqparams = "http://www.webmd.com" + req.body["stuff"];
+	console.log("LOOK HERE" + reqparams)
 	var data = [];
 	osmosis
 		.get(reqparams)
-		.find('p + ul')
-		.then(function(context, data, next) {
-		  var items = context.find('li');
-		  var last = [];
-		  console.log(Object.keys(items));
-		  items.forEach(function(item) {
-		        next(item, data);
-		  })
-		})
-		.set('condition')
-		.follow('@href')
+		.find('tbody')
 		.set({'medication':['//td[1]']})
 		.data(function(results) { //output
 			data.push(results)
@@ -81,8 +72,9 @@ module.exports.translateSymptoms = function(req, res){
 	    if (!error && response.statusCode == 200) {
 	        // Print out the response body
 	        
-	        console.log(body[Object.keys(body)]);
+	    
 	        var symp = body[Object.keys(body)[0]][0].id;
+	        console.log(symp);
 
 			var options2 = {
 			  url: 'https://api.infermedica.com/v2/diagnosis',
@@ -104,6 +96,7 @@ module.exports.translateSymptoms = function(req, res){
 			    if (!error && response.statusCode == 200) {
 			        // Print out the response body
 			        	var condName = body["mentions"][0]["name"];
+			        	console.log(condName)
 			        	listRelated(res, condName)
 			    }
 			})

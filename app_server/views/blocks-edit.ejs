@@ -148,15 +148,12 @@
             tbl_body.setAttribute("id", "resultTable");
             var odd_even = false;
 //            console.log("DATA", data);
-            $.each(data, function(){
+            $.each(data, function(index, value){
                 var tbl_row = tbl_body.insertRow();
-                tbl_row.className = odd_even ? "odd" : "even";
-                $.each(this, function(k, v){
-                    var cell = tbl_row.insertCell();
-
-                    cell.appendChild(document.createTextNode(v.toString()));
-                })
-                odd_even = !odd_even;
+                var cell = tbl_row.insertCell();
+                var medd = document.createElement("p");
+                medd.innerHTML = value;
+                cell.appendChild(medd); 
             })
             var tab = document.getElementById("tblMeds");
             tab.innerHTML = '';
@@ -229,7 +226,7 @@
           console.log("SECOND");
 //            console.log("MAIN DATA", data)
 //            console.log("Response", data);
-          generateMedList(data);
+          generateMedList(data[0].medication);
         }).fail(function(data){
             console.error("ERROR - Failed:" + data);
         });
