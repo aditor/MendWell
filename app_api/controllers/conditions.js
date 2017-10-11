@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Day = mongoose.model('Day');
+var Condition = mongoose.model('Condition');
 var request = require('request');
 var osmosis = require('osmosis');
 
@@ -13,7 +13,7 @@ var sendJsonResponse = function(res, status, content) {
 	res.json(content);
 };
 
-
+//
 var listRelated = function(res, ailment) {
 	var resultArr = [];
 	osmosis
@@ -105,21 +105,29 @@ module.exports.translateSymptoms = function(req, res){
 }
 
 
-//sort by date
-module.exports.listDays = function (req, res) {
-	Day.find({}).sort('-date').exec(function(err, docs) {
+//sort by date ?
+
+module.exports.conditionsCreate = function (req, res) {
+	Condition.find({}).sort('-date').exec(function(err, docs) {
 		sendJsonResponse(res, 200, docs);
 	}); 
 };
 
-module.exports.daysReadOne = function (req, res) {
-	Day.findById(req.params.dayid).exec(function(err, day) {
+
+module.exports.listConditions = function (req, res) {
+	Condition.find({}).sort('-date').exec(function(err, docs) {
+		sendJsonResponse(res, 200, docs);
+	}); 
+};
+
+module.exports.conditionsReadOne = function (req, res) {
+	Condition.findById(req.params.dayid).exec(function(err, day) {
 		sendJsonResponse(res, 200, day);
 	});
 };
 
-module.exports.daysUpdateOne= function (req, res) {
-	Day
+module.exports.conditionsUpdateOne= function (req, res) {
+	Condition
 		.findById(req.params.dayid)
 		.exec(
 		function(err, day) {
@@ -135,4 +143,4 @@ module.exports.daysUpdateOne= function (req, res) {
 		);
 };
 
-module.exports.daysDeleteOne= function (req, res) { };
+module.exports.conditionsDeleteOne= function (req, res) { };

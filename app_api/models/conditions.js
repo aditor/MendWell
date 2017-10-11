@@ -11,9 +11,8 @@ var condition = new mongoose.Schema({
 	medsNeeded: [medication],
 	severity: {type:Number, "default": 0}
 })
-var daysSchema = new mongoose.Schema({
-	date: String,
+var conditionsSchema = new mongoose.Schema({
 	conditionList: [condition]
 })
 
-mongoose.model('Day', daysSchema);
+mongoose.model('Condition', conditionsSchema);

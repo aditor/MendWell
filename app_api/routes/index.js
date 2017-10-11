@@ -1,24 +1,23 @@
 var express = require('express');
 var router = express.Router();
-var ctrlDays = require('../controllers/days');
+var ctrlConditions = require('../controllers/conditions');
+var ctrlMedications = require('../controllers/medications');
 
-router.get('/days', ctrlDays.listDays);
-router.post('/morning', ctrlDays.translateSymptoms);
-router.post('/shit', ctrlDays.createMedList);
-/*router.post('/days', ctrlDays.daysCreate);*/
-router.get('/days/:dayid', ctrlDays.daysReadOne);
-router.put('/days/:dayid', ctrlDays.daysUpdateOne);
-router.delete('/days/:dayid', ctrlDays.daysDeleteOne);
+router.get('/conditions', ctrlConditions.listConditions);
+router.post('/morning', ctrlConditions.translateSymptoms);
+router.post('/shit', ctrlConditions.createMedList);
+router.post('/conditions', ctrlConditions.conditionsCreate);
+router.get('/conditions/:conditionid', ctrlConditions.conditionsReadOne);
+router.put('/conditions/:conditionid', ctrlConditions.conditionsUpdateOne);
+router.delete('/conditions/:conditionid', ctrlConditions.conditionsDeleteOne);
 
+// reviews - in my case might be the medications and body status
 
-
-/*// reviews - in my case might be the medications and body status
-
-router.post('/locations/:locationid/reviews', ctrlReviews.reviewsCreate);
-router.get('/locations/:locationid/reviews/:reviewid',
-ctrlReviews.reviewsReadOne);
-router.put('/locations/:locationid/reviews/:reviewid',
-ctrlReviews.reviewsUpdateOne);
-router.delete('/locations/:locationid/reviews/:reviewid',
-ctrlReviews.reviewsDeleteOne);*/
+router.post('/conditions/:conditionid/medications', ctrlMedications.medsCreate);
+router.get('/conditions/:conditionid/medications/:medicationid',
+ctrlMedications.medsReadOne);
+router.put('/conditions/:conditionid/medications/:medicationid',
+ctrlMedications.medsUpdateOne);
+router.delete('/conditions/:conditionid/medications/:medicationid',
+ctrlMedications.medsDeleteOne);
 module.exports = router;
