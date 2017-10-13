@@ -108,39 +108,65 @@ module.exports.translateSymptoms = function(req, res){
 //sort by date ?
 
 module.exports.conditionsCreate = function (req, res) {
-	Condition.find({}).sort('-date').exec(function(err, docs) {
-		sendJsonResponse(res, 200, docs);
-	}); 
+	Condition.create({
+		name: req.body.name,
+		severity: req.body.severity
+		}, function(err, condition){
+			if(err){
+				sendJsonResponse(res, 400, err);
+			} else {
+				sendJsonResponse(res, 201, condition);
+			}
+		});
 };
 
 
 module.exports.listConditions = function (req, res) {
-	Condition.find({}).sort('-date').exec(function(err, docs) {
-		sendJsonResponse(res, 200, docs);
-	}); 
+	Condition
+		.find({})
+		.exec(function(err, docs) {
+			if(err){
+				sendJsonResponse(res, 404, err);
+			} else {
+				var conditions = [];
+				sendJsonResponse(res, 200, docs);
+			}
+		}); 
 };
 
 module.exports.conditionsReadOne = function (req, res) {
-	Condition.findById(req.params.dayid).exec(function(err, day) {
-		sendJsonResponse(res, 200, day);
-	});
+	if (req.params && req.params.conditionid) {
+		Condition
+		    .findById(req.params.conditionid)
+			.exec(function(err, condition) {
+				if(!condition){
+					sendJsonResponse(res, 404, {"message":"No conditionid in request"});
+					return;
+				} else if (err){
+					sendJsonResponse(res, 404, err);
+					return;
+				}
+				sendJsonResponse(res, 200, condition);
+		    });
+	} else {
+		sendJsonResponse(res, 404, {"message":"No conditionid in request"});
+	}
 };
 
 module.exports.conditionsUpdateOne= function (req, res) {
 	Condition
 		.findById(req.params.dayid)
 		.exec(
-		function(err, day) {
-			day.name = req.body.name;
-			day.save(function(err, day) {
+		function(err, condition) {
+			condition.name = req.body.name;
+			condition.save(function(err, condition) {
 				if (err) {
-				sendJsonResponse(res, 404, err);
+					sendJsonResponse(res, 404, err);
 				} else {
-				sendJsonResponse(res, 200, day);
+					sendJsonResponse(res, 200, day);
 				}
 			});
-		}
-		);
+		});
 };
 
 module.exports.conditionsDeleteOne= function (req, res) { };
