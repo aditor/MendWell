@@ -2,17 +2,15 @@ var mongoose = require( 'mongoose' );
 
 
 // models
-var medication = new mongoose.Schema({
+var medSchema = new mongoose.Schema({
 	medName: {type: String, required: true},
 	medDosage: {type: String, required: true}
 })
-var condition = new mongoose.Schema({
+var conditionSchema = new mongoose.Schema({
 	name: {type: String, required: true},
-	medList: [medication],
+	medList: [medSchema],
 	severity: {type:Number, "default": 0}
 })
-var conditionsSchema = new mongoose.Schema({
-	conditionList: [condition]
-})
 
-mongoose.model('Condition', conditionsSchema);
+
+mongoose.model('Condition', conditionSchema);

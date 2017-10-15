@@ -37,7 +37,7 @@
   </div>
 
   <!-- button for editing the LATEST day -->
-  <a class="btn btn-success" href="/block/edit">Add a Condition</a>
+  <a class="btn btn-success" href="/condition/edit">Add a Condition</a>
 
   <div class="row">
     <div class="col-xs-12 col-sm-8">
@@ -51,7 +51,7 @@
                                     <tr>
 
                                       <th class="text-warning" > 
-                                         <h4> <a href="/block"><%= singleCond.name %></a> </h4>
+                                         <h4> <a href="/condition/<%=singleCond._id%>"><%= singleCond.name %></a> </h4>
                                        </th>
                                       <th class="text-success"><%= singleCond.severity %></th>
                                     </tr>
