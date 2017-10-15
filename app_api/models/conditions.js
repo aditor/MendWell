@@ -8,7 +8,7 @@ var medication = new mongoose.Schema({
 })
 var condition = new mongoose.Schema({
 	name: {type: String, required: true},
-	medsNeeded: [medication],
+	medList: [medication],
 	severity: {type:Number, "default": 0}
 })
 var conditionsSchema = new mongoose.Schema({
