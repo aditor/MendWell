@@ -154,19 +154,40 @@ module.exports.conditionsReadOne = function (req, res) {
 };
 
 module.exports.conditionsUpdateOne= function (req, res) {
+	if(!req.params.conditionid){ sendJsonResponse(res, 404, {'message':'Not found, conditionid is required'})
+		return; 
+	}
 	Condition
-		.findById(req.params.dayid)
+		.findById(req.params.conditionid)
+		.select('-medList')
 		.exec(
 		function(err, condition) {
+			if(!condition){sendJsonResponse(res, 404, {'message':'conditionid not found'})
+				return;
+		    } else if (err){sendJsonResponse(res, 404, err);
+		    	return;
+		    }
 			condition.name = req.body.name;
+			condition.severity = req.body.severity;
 			condition.save(function(err, condition) {
 				if (err) {
 					sendJsonResponse(res, 404, err);
 				} else {
-					sendJsonResponse(res, 200, day);
+					sendJsonResponse(res, 200, condition);
 				}
 			});
 		});
 };
 
-module.exports.conditionsDeleteOne= function (req, res) { };
+module.exports.conditionsDeleteOne= function (req, res) {
+	var conditionid = req.params.conditionid;
+	if(!conditionid){sendJsonResponse(res, 404, {'message':'No conditionid'})}
+	Condition
+		.findByIdAndRemove(conditionid)
+		.exec(function(err, condition){
+			if(err){sendJsonResponse(res, 404, err);
+				return
+			}
+			sendJsonResponse(res, 204, null);
+		});
+};
