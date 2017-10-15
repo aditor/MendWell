@@ -40,11 +40,15 @@ module.exports.conditionlist = function(req, res){
 };
 
 
-var renderDetailPage = function (req, res) {
+var renderDetailPage = function (req, res, responseBody) {
 	res.render('conditions-info', {
-	title: 'Starcups',
-	...
-	});
+		    pageHeader: {
+				title: 'MendWell',
+				strapline: 'Track your medications and wellbeing'
+	        }, 
+	        condition: responseBody
+		}		    		     
+	); 
 };
 
 /* GET 'condition info' page about a certain condition to add/remove medications or even
@@ -60,12 +64,14 @@ module.exports.conditionInfo = function(req, res){
 	request(
 		requestOptions,
 		function(err, response, body) {
-		    renderDetailPage(req, res);
+			console.log(body);
+		    renderDetailPage(req, res, body);
 	    }
 	);
 };
 
 /* GET 'Add condition' page */
 module.exports.addCondition= function(req, res){
+	console.log("in the right place")
 	res.render('conditions-edit', { title: 'Edit condition' });
 };

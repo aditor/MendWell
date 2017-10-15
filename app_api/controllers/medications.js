@@ -112,6 +112,7 @@ module.exports.medsUpdateOne= function (req, res) {
 		    } else {
 		    	thisMed.medName = req.body.medName;
 		    	thisMed.medDosage = req.body.medDosage;
+		    	thisMed.updatedLast = Date.now;
 		    	condition.save(function(err, condition){
 		    		if(err){sendJsonResponse(res, 404, err);}
 		    		else{sendJsonResponse(res, 200, thisMed);}	

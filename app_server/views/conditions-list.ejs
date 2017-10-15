@@ -31,13 +31,13 @@
   <div class="page-header" id="banner">
     <div class="row">
       <div class="col-lg-6">
-        <h1>Recent Days <br><small>&nbsp;Track your medications and wellbeing</small></h1>
+        <h1>Conditions<br><small>&nbsp;Track your medications and wellbeing</small></h1>
       </div>
     </div>
   </div>
 
   <!-- button for editing the LATEST day -->
-  <a class="btn btn-success" href="/condition/edit">Add a Condition</a>
+  <a class="btn btn-success" href="/addACondition">Add a Condition</a>
 
   <div class="row">
     <div class="col-xs-12 col-sm-8">
@@ -58,14 +58,15 @@
                                   </thead>
                                   <tbody>
                                     
-                                    <% singleCond.meds.forEach(function(eachMed) { %>
+                                    <% singleCond.medList.forEach(function(eachMed) { %>
                                       <tr>
                                         <td><%= eachMed.medName %></td>
                                         <td><%= eachMed.medDosage %></td>
                                       </tr>
                                     <% }); %>
-
                                   </tbody>
+
+                                  
                                 </table>                                                
               </div>
        <% }); %>

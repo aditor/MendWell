@@ -32,7 +32,8 @@
   <div class="page-header" id="banner">
     <div class="row">
       <div class="col-lg-6">
-        <h1>Edit Details<br><small>&nbsp;</small></h1>
+        <h1>Add a Condition<br></h1>
+        <h4>Enter your symptoms and choose the corresponding medications</h4>
       </div>
     </div>
   </div>
@@ -41,66 +42,47 @@
     <div class="col-xs-12 col-sm-8">
       <div class="row list-group">
         <div class="col-xs-12 list-group-item">
-               <div class="well well-lg">
-          
-                  <h4> 
-                    <a href="/condition">Date: 05/08/2017</a>
-                  </h4>
-
-                  <div style="clear: left;">
-                    <button onclick="listFunction()" class="btn btn-info">Add a Row</button>
-                    <button id="clear" onclick="clearList()" class="btn btn-warning">Clear</button>
-                    <!-- ADD A SAVE METHOD HERE -->
-                     <button id="save" class="btn btn-success">Save</button>
-                  </div>
-
-                  <h4>Condition</h4>
-                  
-                  <div class="form-group">
-                      <input class="form-control" id="condInput" type="text" placeholder="Enter your condition" style="float: left">
-                      <button class="btn btn-info" id="condSubmit" href="/api/morning" style="float: right;">Submit</button>
-                  </div>  
-
-
-                  <!-- copy of submit and form above -->
-                  <!-- <div class="form-group">
-                      <input class="form-control" id="focusedInput" type="text" placeholder="Enter your condition" style="float: left">
-                      <a class="btn btn-info" href="/api/morning" style="float: right;">Submit</a>
-                  </div>   -->
 
 
 
 
 
+              <div class="well well-lg">
+                  <div class="row">
+                      <div class="col-xs-6">
+                          
+                        <div class="well well-lg">
+                          <div >
+                            <button onclick="listFunction()" class="btn btn-info">Add a Row</button>
+                            <button id="clear" onclick="clearList()" class="btn btn-warning">Clear</button>
+                            <!-- ADD A SAVE METHOD HERE -->
+                             <button id="save" class="btn btn-success">Save</button>
+                          </div>
 
+                          <h4>Condition</h4>
+                          
+                          <div class="form-group">
+                              <input class="form-control" id="condInput" type="text" placeholder="Enter your condition" style="float: left">
+                              <button class="btn btn-info" id="condSubmit" href="/api/morning" style="float: right;">Submit</button>
+                          </div>  
+                        </div>
 
-                  <!-- the ORANGE little boxes I had before -->
+                      </div>
+                      <div class="col-xs-6">
+                          <div class="well well-lg">
 
-                  <!-- <p><span class="label label-warning">Left leg</span>
-                    <span class="label label-warning">Right arm</span>
-                    <span class="label label-warning">Head</span>
-                  </p> -->
+                          <h4>Condition</h4>
 
-                 <!--  <h4>
-                    Medications
-                  </h4>
-                          <ul id="mainList" style="list-style-type: none" ;>
-                              <li>
-                                  <div id = "bunch" style="clear: left;">
-                                      
-                                        <div class="form-group" style="float: left">
-                                          <input class="form-control" id="focusedInput" type="text" placeholder="Enter medication">
-                                        </div>  
-
-                                         <div class="form-group" style="float: left">
-                                          <input class="form-control" id="focusedInput" type="text" placeholder="Enter dosage">
-                                        </div>  
-                                                  
-                                  </div>
-                              </li>
+                          <ul id="submissionList" style="list-style-type: none" ;>
+                              
                           </ul>
-                          -->
-                </div>
+                          
+                        </div>
+                      </div>
+                  </div>
+              </div>
+
+
         </div>
       </div>
     </div>
@@ -124,14 +106,29 @@
     </div>
 
     <script>
-      function listFunction() {
-              var lis = document.getElementById("mainList");
-              var singleRow = document.getElementById("bunch");
-              var duplicated = singleRow.cloneNode(true);
-              var li = document.createElement('li');
-              li.appendChild(duplicated)
-              lis.appendChild(li);
-      }
+
+
+    //script for managing the condition submission form beside the input
+
+    //TODO: add check for if the medicaiton exists in the table, also add functiionality to remove the condition from the table
+    //also try to include all the data in a table
+
+    function addtoFinalForm(conditionName){
+      var node = document.createElement("Li");
+      var textnode=document.createTextNode(conditionName);
+      node.appendChild(textnode);
+      document.getElementById("submissionList").appendChild(node);
+    }
+
+
+    function listFunction() {
+      var lis = document.getElementById("mainList");
+      var singleRow = document.getElementById("bunch");
+      var duplicated = singleRow.cloneNode(true);
+      var li = document.createElement('li');
+      li.appendChild(duplicated)
+      lis.appendChild(li);
+    }
 
 
       function clearList(){
@@ -153,6 +150,9 @@
                 var cell = tbl_row.insertCell();
                 var medd = document.createElement("p");
                 medd.innerHTML = value;
+                medd.addEventListener("click", function(e) {
+                    addtoFinalForm(value);
+                }, false);
                 cell.appendChild(medd); 
             })
             var tab = document.getElementById("tblMeds");
@@ -172,6 +172,9 @@
                 var cell = tbl_row.insertCell();
                 var butt = document.createElement("a");
                 butt.innerHTML = value.name.name;
+                butt.addEventListener("click", function(e) {
+                    addtoFinalForm("Condition name: " + value.name.name);
+                }, false);
                 butt.setAttribute('onclick', "findMeds('" + value.link + "')");
                 cell.appendChild(butt);                      
                 //odd_even = !odd_even;
@@ -236,3 +239,39 @@
     </script>
 
   </body>
+
+
+
+
+    <!-- copy of submit and form above -->
+                  <!-- <div class="form-group">
+                      <input class="form-control" id="focusedInput" type="text" placeholder="Enter your condition" style="float: left">
+                      <a class="btn btn-info" href="/api/morning" style="float: right;">Submit</a>
+                  </div>   -->
+
+                  <!-- the ORANGE little boxes I had before -->
+
+                  <!-- <p><span class="label label-warning">Left leg</span>
+                    <span class="label label-warning">Right arm</span>
+                    <span class="label label-warning">Head</span>
+                  </p> -->
+
+                 <!--  <h4>
+                    Medications
+                  </h4>
+                          <ul id="mainList" style="list-style-type: none" ;>
+                              <li>
+                                  <div id = "bunch" style="clear: left;">
+                                      
+                                        <div class="form-group" style="float: left">
+                                          <input class="form-control" id="focusedInput" type="text" placeholder="Enter medication">
+                                        </div>  
+
+                                         <div class="form-group" style="float: left">
+                                          <input class="form-control" id="focusedInput" type="text" placeholder="Enter dosage">
+                                        </div>  
+                                                  
+                                  </div>
+                              </li>
+                          </ul>
+                          -->

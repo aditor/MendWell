@@ -140,7 +140,7 @@ module.exports.conditionsReadOne = function (req, res) {
 		    .findById(req.params.conditionid)
 			.exec(function(err, condition) {
 				if(!condition){
-					sendJsonResponse(res, 404, {"message":"No conditionid in request"});
+					sendJsonResponse(res, 404, {"message":"1No conditionid in request"});
 					return;
 				} else if (err){
 					sendJsonResponse(res, 404, err);
@@ -149,7 +149,7 @@ module.exports.conditionsReadOne = function (req, res) {
 				sendJsonResponse(res, 200, condition);
 		    });
 	} else {
-		sendJsonResponse(res, 404, {"message":"No conditionid in request"});
+		sendJsonResponse(res, 404, {"message":"2No conditionid in request"});
 	}
 };
 
@@ -169,6 +169,7 @@ module.exports.conditionsUpdateOne= function (req, res) {
 		    }
 			condition.name = req.body.name;
 			condition.severity = req.body.severity;
+			condition.updatedLast = Date.now;
 			condition.save(function(err, condition) {
 				if (err) {
 					sendJsonResponse(res, 404, err);
