@@ -38,62 +38,53 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-xs-12 col-sm-8">
-      <div class="row list-group">
-        <div class="col-xs-12 list-group-item">
-
-
-
-
-
-              <div class="well well-lg">
-                  <div class="row">
-                      <div class="col-xs-6">
-                          
+  <div class="col-xs-12">
+                      <div class="col-xs-4">         
                         <div class="well well-lg">
                           <div >
                             <button onclick="listFunction()" class="btn btn-info">Add a Row</button>
                             <button id="clear" onclick="clearList()" class="btn btn-warning">Clear</button>
-                            <!-- ADD A SAVE METHOD HERE -->
-                             <button id="save" class="btn btn-success">Save</button>
+                          
                           </div>
 
-                          <h4>Condition</h4>
-                          
-                          <div class="form-group">
-                              <input class="form-control" id="condInput" type="text" placeholder="Enter your condition" style="float: left">
-                              <button class="btn btn-info" id="condSubmit" href="/api/morning" style="float: right;">Submit</button>
-                          </div>  
+                          <h4>Search Conditions</h4>
+                          <div class="col-xs-8">
+                              <input class="form-control" id="condInput" type="text" placeholder="Enter your symptoms">
+                          </div>
+                          <div class="col-xs-1">
+                              <button class="btn btn-info" id="condSubmit" href="/api/morning" >Submit</button>
+                          </div>
+
+                          <div class="col-xs-8">
+                              <input class="form-control" id="severityInput" type="text" placeholder="Enter condition severity">
+                          </div>
+                          <div class="col-xs-1">
+                              <button class="btn btn-info" id="severitySubmit" >Submit</button>
+                          </div>
                         </div>
 
                       </div>
-                      <div class="col-xs-6">
+                      <div class="col-xs-4">
                           <div class="well well-lg">
 
+                           <!-- ADD A SAVE METHOD HERE -->
+                             <button id="save" class="btn btn-success">Save</button>
                           <h4>Condition</h4>
 
                           <ul id="submissionList" style="list-style-type: none" ;>
                               
                           </ul>
-                          
                         </div>
+                         
                       </div>
-                  </div>
-              </div>
 
-
-        </div>
-      </div>
-    </div>
+                      <div class="col-xs-4">
+                          <table id="tblMeds" class="table table-striped table-hover ">
+    
+                          </table>  
+                        </div>
   </div>
 
-  
-
-
-  <table id="tblMeds" class="table table-striped table-hover ">
-    
-  </table>  
 
 
 
@@ -117,7 +108,29 @@
       var node = document.createElement("Li");
       var textnode=document.createTextNode(conditionName);
       node.appendChild(textnode);
-      document.getElementById("submissionList").appendChild(node);
+      var list = document.getElementById("submissionList")
+
+      var listItem = list.getElementsByTagName("li");
+
+      var toAdd = true;
+
+      for (var i=0; i < listItem.length; i++) {
+          if(listItem[i].innerHTML === conditionName){
+              toAdd = false;
+          }
+      }
+      if(toAdd){
+        var delButton = document.createElement("button");
+        var outderDel = delButton;
+        var outerNode = node;
+        delButton.addEventListener("click", function(e) {
+          list.removeChild(outerNode);
+          list.removeChild(outderDel);
+        }, false);
+        delButton.innerHTML = "Remove";
+        list.appendChild(node);
+        list.appendChild(delButton);
+      }
     }
 
 
