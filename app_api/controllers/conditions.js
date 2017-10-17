@@ -110,6 +110,7 @@ module.exports.translateSymptoms = function(req, res){
 module.exports.conditionsCreate = function (req, res) {
 	Condition.create({
 		name: req.body.name,
+		medList: req.body.medList,
 		severity: req.body.severity
 		}, function(err, condition){
 			if(err){

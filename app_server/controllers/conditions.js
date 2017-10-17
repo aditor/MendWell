@@ -72,6 +72,62 @@ module.exports.conditionInfo = function(req, res){
 
 /* GET 'Add condition' page */
 module.exports.addCondition= function(req, res){
-	console.log("in the right place")
 	res.render('conditions-edit', { title: 'Edit condition' });
 };
+
+module.exports.doAddCondition = function(req, res){
+	console.log("HERE IS REQ" + req.body.condInfo )
+
+	var reqestOptions, path, postdata, medArray;
+	path = "/api/conditions";
+
+	var input = req.body.condInfo;
+	var conditionName = input.shift();
+
+	var medArr = [];
+	input.forEach(function(item){
+		medArr.push({
+			medName: item,
+		    medDosage: "3"
+		})
+	})
+
+/*	var medArr = input.map(function(medItem){
+		var medObj = {
+		    medName: medItem,
+		    medDosage: "3"
+		};
+		return medObj;
+	});*/
+
+	var postdata = {
+		name: conditionName,
+		medList: medArr,
+		severity: 9
+	}
+
+	console.log("HERES POTSTADATA" + postdata)
+
+	requestOptions = {
+		url: apiOptions.server + path,
+		method: "POST",
+		json: postdata
+	}
+
+			console.log("TEST3");
+
+	console.log(postdata);
+
+	request(
+		requestOptions,
+		function(err, response, body){
+			if(err){
+				console.log(err);
+			}
+			if(response.statusCode === 201){
+				// Redirect to details page if added successfully
+				res.redirect('/');
+			}
+		}
+	)
+}

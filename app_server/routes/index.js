@@ -7,7 +7,7 @@ var ctrlOthers = require('../controllers/others');
 router.get('/', ctrlConditions.conditionlist);
 router.get('/condition/:conditionid', ctrlConditions.conditionInfo);
 router.get('/addCondition', ctrlConditions.addCondition);
-//router.post('/addCondition', ctrlConditions.doAddCondition);
+router.post('/addCondition', ctrlConditions.doAddCondition);
 
 /* Other pages */
 router.get('/about', ctrlOthers.about);

@@ -67,18 +67,26 @@
                       <div class="col-xs-4">
                           <div class="well well-lg">
 
-                           <!-- ADD A SAVE METHOD HERE -->
-                             <button id="save" class="btn btn-success">Save</button>
                           <h4>Condition</h4>
 
+                          <form id="bigForm" action="" method="post">
+                            <input type="submit" class="btn btn-success" id="mysubmit" />
+                            <table id="bigTable" class="table table-striped table-hover ">
+
+                            </table>                
+                          </form>
+
+                          <!-- list where the condition and meds to be submitted are -->
                           <ul id="submissionList" style="list-style-type: none" ;>
                               
                           </ul>
+
                         </div>
                          
                       </div>
 
-                      <div class="col-xs-4">
+                      <div class="col-xs-4" style="overflow:scroll; height:500px;">
+
                           <table id="tblMeds" class="table table-striped table-hover ">
     
                           </table>  
@@ -105,37 +113,29 @@
     //also try to include all the data in a table
 
     function addtoFinalForm(conditionName){
-      var node = document.createElement("Li");
-      var textnode=document.createTextNode(conditionName);
-      node.appendChild(textnode);
-      var list = document.getElementById("submissionList")
+      var rowInput = document.createElement("input");
+      rowInput.setAttribute("name", "condInfo");
+      rowInput.setAttribute("class", "form-control");
+      rowInput.value = conditionName;
+      var MAX_INPUT_SIZE = 40;
+      $(rowInput).attr("size", MAX_INPUT_SIZE);
 
-      var listItem = list.getElementsByTagName("li");
-
+      var bigTable = document.getElementById("bigTable");  
       var toAdd = true;
 
-      for (var i=0; i < listItem.length; i++) {
-          if(listItem[i].innerHTML === conditionName){
-              toAdd = false;
-          }
-      }
-      if(toAdd){
-        var delButton = document.createElement("button");
-        var outderDel = delButton;
-        var outerNode = node;
-        delButton.addEventListener("click", function(e) {
-          list.removeChild(outerNode);
-          list.removeChild(outderDel);
-        }, false);
-        delButton.innerHTML = "Remove";
-        list.appendChild(node);
-        list.appendChild(delButton);
-      }
+/*      if( !currentText.indexOf(conditionName) >= 0){
+          inputArea.value += conditionName + "\n";  
+      }*/
+      var row = bigTable.insertRow(-1);
+
+      var newCell = row.insertCell(-1);
+
+      newCell.appendChild(rowInput);
     }
 
 
     function listFunction() {
-      var lis = document.getElementById("mainList");
+      var form = document.getElementById("mainList");
       var singleRow = document.getElementById("bunch");
       var duplicated = singleRow.cloneNode(true);
       var li = document.createElement('li');
@@ -186,7 +186,7 @@
                 var butt = document.createElement("a");
                 butt.innerHTML = value.name.name;
                 butt.addEventListener("click", function(e) {
-                    addtoFinalForm("Condition name: " + value.name.name);
+                    addtoFinalForm(value.name.name);
                 }, false);
                 butt.setAttribute('onclick', "findMeds('" + value.link + "')");
                 cell.appendChild(butt);                      
@@ -205,7 +205,7 @@
             tab.innerHTML = '';
         }
         $.ajax({
-            url: 'http://localhost:3000/api/morning',
+            url: '/api/morning',
             type: 'post',
 //            data: JSON.stringify(query),
             data: JSON.stringify({"stuff":text}),
@@ -230,7 +230,7 @@
             tab.innerHTML = '';
         }
         $.ajax({
-            url: 'http://localhost:3000/api/shit',
+            url: '/api/shit',
             type: 'post',
 //            data: JSON.stringify(query),
             data: JSON.stringify({"stuff":link}),
