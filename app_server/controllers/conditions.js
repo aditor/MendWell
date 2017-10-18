@@ -19,8 +19,6 @@ var renderHomepage = function(req, res, responseBody){
 	); 
 };
 
-
-
 /* GET 'home' page, list ALL conditions */
 module.exports.conditionlist = function(req, res){
 	var requestOptions, path;
@@ -76,8 +74,6 @@ module.exports.addCondition= function(req, res){
 };
 
 module.exports.doAddCondition = function(req, res){
-	console.log("HERE IS REQ" + req.body.condInfo )
-
 	var reqestOptions, path, postdata, medArray;
 	path = "/api/conditions";
 
@@ -92,31 +88,17 @@ module.exports.doAddCondition = function(req, res){
 		})
 	})
 
-/*	var medArr = input.map(function(medItem){
-		var medObj = {
-		    medName: medItem,
-		    medDosage: "3"
-		};
-		return medObj;
-	});*/
-
 	var postdata = {
 		name: conditionName,
 		medList: medArr,
 		severity: 9
 	}
 
-	console.log("HERES POTSTADATA" + postdata)
-
 	requestOptions = {
 		url: apiOptions.server + path,
 		method: "POST",
 		json: postdata
 	}
-
-			console.log("TEST3");
-
-	console.log(postdata);
 
 	request(
 		requestOptions,
@@ -131,3 +113,28 @@ module.exports.doAddCondition = function(req, res){
 		}
 	)
 }
+
+module.exports.doDeleteCondition = function(req, res){
+	var reqestOptions, path;
+	path = "/api/conditions/" + req.params.conditionid;
+
+	requestOptions = {
+		url: apiOptions.server + path,
+		method: "DELETE",
+		json: {}
+	}
+
+	request(
+		requestOptions,
+		function(err, response, body){
+			if(err){
+				console.log(err);
+			}
+			if(response.statusCode === 201){
+				// Redirect to details page if added successfully
+				res.redirect('../../');
+			}
+		}
+	)
+}
+

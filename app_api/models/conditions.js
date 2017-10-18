@@ -1,6 +1,5 @@
 var mongoose = require( 'mongoose' );
 
-
 // models
 var medSchema = new mongoose.Schema({
 	medName: {type: String, required: true},
@@ -15,6 +14,5 @@ var conditionSchema = new mongoose.Schema({
 	createdOn: {type: Date, "default": Date.now},
 	updatedLast: {type: Date, "default": Date.now}
 })
-
 
 mongoose.model('Condition', conditionSchema);

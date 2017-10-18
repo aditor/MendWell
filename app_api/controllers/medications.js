@@ -7,13 +7,12 @@ var appId = 'a0688df7';
 var appKey = 'b12e2d04580c6ecfc40c89764e2eaf32';
 var FINAL = [];
 
-
 var sendJsonResponse = function(res, status, content) {
 	res.status(status);
 	res.json(content);
 };
 
-//sort by date ?
+// Sort by date ?
 
 // GET
 module.exports.medsReadOne = function (req, res) {
@@ -49,9 +48,6 @@ module.exports.medsReadOne = function (req, res) {
 			}
 	    });
 };
-
-
-
 
 module.exports.medsCreate = function (req, res) {
 	var conditionid = req.params.conditionid;

@@ -8,6 +8,7 @@ router.get('/', ctrlConditions.conditionlist);
 router.get('/condition/:conditionid', ctrlConditions.conditionInfo);
 router.get('/addCondition', ctrlConditions.addCondition);
 router.post('/addCondition', ctrlConditions.doAddCondition);
+router.delete('/condition/:conditionid', ctrlConditions.doDeleteCondition);
 
 /* Other pages */
 router.get('/about', ctrlOthers.about);

@@ -7,13 +7,11 @@ var appId = 'a0688df7';
 var appKey = 'b12e2d04580c6ecfc40c89764e2eaf32';
 var FINAL = [];
 
-
 var sendJsonResponse = function(res, status, content) {
 	res.status(status);
 	res.json(content);
 };
 
-//
 var listRelated = function(res, ailment) {
 	var resultArr = [];
 	osmosis
@@ -33,7 +31,7 @@ var listRelated = function(res, ailment) {
 		.done(function(){
 			console.log(resultArr)
 			sendJsonResponse(res, 200, resultArr)	
-		})
+		});
 }
 
 module.exports.createMedList = function (req, res, ailment) {
@@ -49,10 +47,10 @@ module.exports.createMedList = function (req, res, ailment) {
 		 })
 		 .done(function(){
 		 	sendJsonResponse(res, 200, data)
-		 })
+		 });
 }
 
-//input symptoms and get back the condition
+// Input symptoms and get back the condition
 module.exports.translateSymptoms = function(req, res){
 	var reqparams = req.body["stuff"];
 	console.log(reqparams);
@@ -71,11 +69,8 @@ module.exports.translateSymptoms = function(req, res){
 	request(options, function (error, response, body) {
 	    if (!error && response.statusCode == 200) {
 	        // Print out the response body
-	        
-	    
+	        console.log(JSON.stringify(body));
 	        var symp = body[Object.keys(body)[0]][0].id;
-	        console.log(symp);
-
 			var options2 = {
 			  url: 'https://api.infermedica.com/v2/diagnosis',
 			  method: 'POST',
@@ -85,6 +80,7 @@ module.exports.translateSymptoms = function(req, res){
 			  },
 			  json: true,
 			  body:    {
+			  	// Get these values from user and also enable multiple symptom entry
 							"sex": "male",
 						    "age": 30,
 						    "evidence": [
@@ -105,8 +101,7 @@ module.exports.translateSymptoms = function(req, res){
 }
 
 
-//sort by date ?
-
+// Sort by date ?
 module.exports.conditionsCreate = function (req, res) {
 	Condition.create({
 		name: req.body.name,
@@ -120,7 +115,6 @@ module.exports.conditionsCreate = function (req, res) {
 			}
 		});
 };
-
 
 module.exports.listConditions = function (req, res) {
 	Condition
