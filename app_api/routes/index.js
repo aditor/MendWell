@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var ctrlConditions = require('../controllers/conditions');
 var ctrlMedications = require('../controllers/medications');
-
+var ctrlAuth = require('../controllers/authentication');
 
 router.post('/morning', ctrlConditions.translateSymptoms);
 router.post('/shit', ctrlConditions.createMedList);

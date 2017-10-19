@@ -16,9 +16,12 @@
     "ejs": "^2.5.6",
     "express": "~4.13.1",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.1.0",
     "libxmljs": "0.18.0",
     "mongoose": "^4.9.9",
     "morgan": "~1.6.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "readline": "0.0.x",
     "request": "^2.83.0",
     "serve-favicon": "~2.3.0"
