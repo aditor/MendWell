@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='mendwellApp'>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
 
-
+    <script src='/angular/angular.min.js'> </script>
+    <script src='/angular/mendwellApp.js'> </script>
     <script src="../../javascripts/jquery-3.2.1.min.js"></script>
     <script src="/bootstrap/js/bootstrap.min.js"></script>
   </head>
@@ -46,27 +47,31 @@
               <div class="col-xs-12 list-group-item">
                   <div class="w3-container">
                     <p>
-                        <button id="delButton" class="btn btn-danger"><i class="fa fa-close"></i>
-                        </button>
+                        <button id="delButton" class="btn btn-danger">Remove</i></button>
                     </p>
 
                   </div>
-                    <table class="table table-striped table-hover ">
+                    <table id="bigTable" class="table table-striped table-hover ">
                       <thead>
                         <tr>
 
                           <th class="text-warning" > 
-                             <h4> <%= condition.name %> </h4>
+                              <%= condition.name %> 
                            </th>
-                          <th class="text-success"><%= condition.severity %></th>
+                          <th class="text-warning"> Dosage </th>
                         </tr>
                       </thead>
                       <tbody>
                         
                         <% condition.medList.forEach(function(eachMed) { %>
                           <tr>
-                            <td><%= eachMed.medName %></td>
-                            <td><%= eachMed.medDosage %></td>
+                            <td>        
+                              <input type="text" class="form-control" value=<%= eachMed.medName %>></td>
+                            <td> <input type="text" class="form-control" value=<%= eachMed.medDosage %>></td>
+                            <td>                         
+                              <!-- add event listener -->
+                              <button class="btn btn-danger" onclick="removeRow(this)"><i class="fa fa-close"></i></button>
+                            </td>
                           </tr>
                         <% }); %>
 
@@ -75,9 +80,12 @@
 
                     <div>
                       <!-- save this properly in the model because it's not the right time, it's updating along with me -->
-                      <h5> Created On: <%= condition.createdOn %></h5>
-                      <h5> Last Updated: <%= condition.updatedLast %></h5>                   
+                      <h5   style="font-weight:bold" class="text-info"> Severity: <%=  condition.severity %> </h5>
+                      <h5  class="text-info"> Created On: <%= condition.createdOn %></h5>
+                      <h5  class="text-info"> Last Updated: <%= condition.updatedLast %></h5>          
+                     <button class="btn btn-info" id="updateCond">Update</button>        
                    </div>
+
               </div>
           </div>
          
@@ -98,6 +106,13 @@
 
 
   <script>
+
+    function removeRow(this){
+      var table = document.getElementById("bigTable");
+      table.deleteRow(this.index);
+    }
+
+
     function formatDate(dateString){
       var date = new Date(dateString);
       var monthNames = [ "January", "February", "March", "April", "May", "June",
@@ -114,7 +129,15 @@
           url: window.location.href,
           type: 'DELETE',
           success: function(result) {
-             
+          }
+      });
+    })
+
+    $("#updateButton").click(function(e){
+      $.ajax({
+          url: window.location.href,
+          type: 'DELETE',
+          success: function(result) {
           }
       });
     })

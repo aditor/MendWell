@@ -8,6 +8,7 @@ var medSchema = new mongoose.Schema({
 	updatedLast: {type: Date, "default": Date.now}
 })
 var conditionSchema = new mongoose.Schema({
+	// owner: {type: String, required: true},
 	name: {type: String, required: true},
 	medList: [medSchema],
 	severity: {type:Number, "default": 0},

@@ -103,17 +103,46 @@ module.exports.translateSymptoms = function(req, res){
 
 // Sort by date ?
 module.exports.conditionsCreate = function (req, res) {
-	Condition.create({
-		name: req.body.name,
-		medList: req.body.medList,
-		severity: req.body.severity
-		}, function(err, condition){
-			if(err){
-				sendJsonResponse(res, 400, err);
-			} else {
-				sendJsonResponse(res, 201, condition);
-			}
+	//getAuthor(req, res, function (req, res, userName) {
+		Condition.create({
+			/*owner: userName,*/
+			name: req.body.name,
+			medList: req.body.medList,
+			severity: req.body.severity
+			}, function(err, condition){
+				if(err){
+					sendJsonResponse(res, 400, err);
+				} else {
+					sendJsonResponse(res, 201, condition);
+				}
+			});
+	//});	
+};
+
+var User = mongoose.model('User');
+var getAuthor = function(req, res, callback) {
+	if (req.payload && req.payload.email) {
+	User
+	.findOne({ email : req.payload.email })
+	.exec(function(err, user) {
+		if (!user) {
+			sendJSONresponse(res, 404, {
+			"message": "User not found"
+			});
+			return;
+		} else if (err) {
+			console.log(err);
+			sendJSONresponse(res, 404, err);
+			return;
+		} 
+		callback(req, res, user.name);
+	});
+	} else {
+		sendJSONresponse(res, 404, {
+		"message": "User not found"
 		});
+		return;
+	}
 };
 
 module.exports.listConditions = function (req, res) {
