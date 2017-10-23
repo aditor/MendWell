@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app='mendwellApp'>
+<html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
@@ -46,9 +46,7 @@
           <div class="col-xs-12 col-sm-6">
               <div class="col-xs-12 list-group-item">
                   <div class="w3-container">
-                    <p>
-                        <button id="delButton" class="btn btn-danger">Remove</i></button>
-                    </p>
+                  
 
                   </div>
                     <table id="bigTable" class="table table-striped table-hover ">
@@ -70,7 +68,7 @@
                             <td> <input type="text" class="form-control" value=<%= eachMed.medDosage %>></td>
                             <td>                         
                               <!-- add event listener -->
-                              <button class="btn btn-danger" onclick="removeRow(this)"><i class="fa fa-close"></i></button>
+                              <button class="btn btn-danger"><i class="fa fa-close"></i></button>
                             </td>
                           </tr>
                         <% }); %>
@@ -83,7 +81,12 @@
                       <h5   style="font-weight:bold" class="text-info"> Severity: <%=  condition.severity %> </h5>
                       <h5  class="text-info"> Created On: <%= condition.createdOn %></h5>
                       <h5  class="text-info"> Last Updated: <%= condition.updatedLast %></h5>          
-                     <button class="btn btn-info" id="updateCond">Update</button>        
+                     
+                      <span>
+                       <button class="btn btn-info" id="updateCond">Update</button>    
+                      
+                       <button id="delButton" class="btn btn-danger">Remove</i></button>  
+                      </span>
                    </div>
 
               </div>
@@ -107,11 +110,11 @@
 
   <script>
 
-    function removeRow(this){
+/*    function removeRow(this){
       var table = document.getElementById("bigTable");
       table.deleteRow(this.index);
     }
-
+*/
 
     function formatDate(dateString){
       var date = new Date(dateString);
@@ -125,6 +128,7 @@
     }
 
     $("#delButton").click(function(e){
+      console.log("Delteddd")
       $.ajax({
           url: window.location.href,
           type: 'DELETE',

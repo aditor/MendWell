@@ -14,8 +14,9 @@ var sendJsonResponse = function(res, status, content) {
 
 var listRelated = function(res, ailment) {
 	var resultArr = [];
+	var formattedQuery = ailment.replace(/ /g,"&");
 	osmosis
-		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + ailment)
+		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + formattedQuery)
 		.find('p + ul')
 		.then(function(context, data, next) {
 		  var items = context.find('li');
@@ -23,6 +24,7 @@ var listRelated = function(res, ailment) {
 		  items.forEach(function(item) {
 		        next(item, data)
 		  })
+		  console.log(items);
 		})
 		.set({'name': osmosis.set('name'),'link':'@href'})
 		.data(function(results) { //output
@@ -52,9 +54,10 @@ module.exports.createMedList = function (req, res, ailment) {
 
 // Input symptoms and get back the condition
 module.exports.translateSymptoms = function(req, res){
-	var reqparams = req.body["stuff"];
+	var reqparams = req.body["symptomList"];
+	reqparams = reqparams.join(" ");
 	console.log(reqparams);
-	console.log(typeof(reqparams))
+
 	var options = {
 	  url: 'https://api.infermedica.com/v2/parse', 
 	  method: 'POST',
@@ -69,6 +72,7 @@ module.exports.translateSymptoms = function(req, res){
 	request(options, function (error, response, body) {
 	    if (!error && response.statusCode == 200) {
 	        // Print out the response body
+	        console.log("Mentions")
 	        console.log(JSON.stringify(body));
 	        var symp = body[Object.keys(body)[0]][0].id;
 			var options2 = {

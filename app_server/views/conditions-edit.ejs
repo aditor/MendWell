@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html ng-app='mendwellApp'>
+<html >
+<!-- ng-app='mendwellApp' -->
   <head>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,26 +46,31 @@
       <div class="col-xs-4">         
         <div class="well well-lg" style="height:500px;">
           
-
+          <h4>Search Conditions</h4>
           <div >
             <button onclick="listFunction()" class="btn btn-info">Add a Row</button>
             <button id="clear" onclick="clearList()" class="btn btn-warning">Clear</button>
           
           </div>
 
-          <h4>Search Conditions</h4>
-          <div class="col-xs-8">
-              <input class="form-control" id="condInput" type="text" placeholder="Enter your symptoms">
-          </div>
+        
+          <ul id="mainList" class="col-xs-8" style="margin-top:20px; margin-left:-15px" >
+            <li style="list-style: none;" >
+              
+                 <input id="symptomInput" class="form-control" id="condInput" type="text" placeholder="Enter a symptom">
+           
+            </li>
+          </ul>
+          
           <div class="col-xs-1">
-              <button class="btn btn-info" id="condSubmit" href="/api/morning" >Submit</button>
+              <button style="margin-top:20px; margin-left:-10px" class="btn btn-info" id="condSubmit" href="/api/morning" >Submit</button>
           </div>
 
-          <div class="col-xs-8">
-              <input class="form-control" id="severityInput" type="text" placeholder="Enter condition severity">
+          <div class="col-xs-8" style="margin-left:-15px">
+              <input class="form-control" id="severityInput" type="text" placeholder="Enter severity">
           </div>
           <div class="col-xs-1">
-              <button class="btn btn-info" id="severitySubmit" >Submit</button>
+              <button style="margin-left:-10px"class="btn btn-info" id="severitySubmit" >Submit</button>
           </div>
         </div>
 
@@ -132,10 +138,12 @@
 
 
     function listFunction() {
-        var form = document.getElementById("mainList");
-        var singleRow = document.getElementById("bunch");
+        var lis = document.getElementById("mainList");
+        var singleRow = document.getElementById("symptomInput");
         var duplicated = singleRow.cloneNode(true);
         var li = document.createElement('li');
+        singleRow.innerHTML = "";
+        li.setAttribute("style", "list-style: none;");
         li.appendChild(duplicated)
         lis.appendChild(li);
     }
@@ -143,9 +151,10 @@
 
     function clearList(){
         var root = document.getElementById("mainList");
-        var savedBunch = document.getElementById("bunch");
+        var savedBunch = document.getElementById("symptomInput");
         root.innerHTML = '';
         var entry = document.createElement('li');
+        entry.setAttribute("style", "list-style: none;");
         entry.appendChild(savedBunch);
         root.appendChild(entry);
     }
@@ -191,21 +200,25 @@
 
 
     $("#condSubmit").click(function(){
+
+        var listItems = $("#mainList li");
+        var postData = [];
+        listItems.each(function(idx, li) {
+            postData.push($(li).find('input').val());
+        });
+
         var tab = document.getElementById("tblMeds");
-        var text = document.getElementById("condInput").value;
         if(tab != null){
             tab.innerHTML = '';
         }
         $.ajax({
             url: '/api/morning',
             type: 'post',
-            data: JSON.stringify({"stuff":text}),
+            data: JSON.stringify({"symptomList":postData}),
             dataType: 'json',
             contentType: 'application/json'
         }).done(function(data){
-          console.log("FIRST");
-          console.log(data);
-          console.log("SECOND");
+          console.log("DATA" + data);
           generateButtonList(data);
         }).fail(function(data){
             console.error("ERROR - Failed:" + data);
