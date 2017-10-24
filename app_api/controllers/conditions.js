@@ -182,6 +182,7 @@ module.exports.conditionsReadOne = function (req, res) {
 };
 
 module.exports.conditionsUpdateOne= function (req, res) {
+	console.log("ENTERED update backend")
 	if(!req.params.conditionid){ sendJsonResponse(res, 404, {'message':'Not found, conditionid is required'})
 		return; 
 	}

@@ -114,6 +114,47 @@ module.exports.doAddCondition = function(req, res){
 	)
 }
 
+module.exports.doUpdateCondition = function(req, res){
+	var reqestOptions, path, postdata, medArray;
+	path = "/api/conditions";
+
+	var input = req.body.condInfo;
+	var conditionName = input.shift();
+
+	var medArr = [];
+	input.forEach(function(item){
+		medArr.push({
+			medName: item,
+		    medDosage: "3"
+		})
+	})
+
+	var postdata = {
+		name: conditionName,
+		medList: medArr,
+		severity: 9
+	}
+
+	requestOptions = {
+		url: apiOptions.server + path,
+		method: "PUT",
+		json: postdata
+	}
+
+	request(
+		requestOptions,
+		function(err, response, body){
+			if(err){
+				console.log(err);
+			}
+			if(response.statusCode === 201){
+				// Redirect to details page if added successfully
+				res.redirect('/');
+			}
+		}
+	)
+}
+
 module.exports.doDeleteCondition = function(req, res){
 	var reqestOptions, path;
 	path = "/api/conditions/" + req.params.conditionid;

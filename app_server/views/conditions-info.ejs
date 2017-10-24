@@ -53,7 +53,7 @@
                       <thead>
                         <tr>
 
-                          <th class="text-warning" > 
+                          <th id="condName" class="text-warning" > 
                               <%= condition.name %> 
                            </th>
                           <th class="text-warning"> Dosage </th>
@@ -64,11 +64,11 @@
                         <% condition.medList.forEach(function(eachMed) { %>
                           <tr>
                             <td>        
-                              <input type="text" class="form-control" value=<%= eachMed.medName %>></td>
-                            <td> <input type="text" class="form-control" value=<%= eachMed.medDosage %>></td>
+                              <input name="medName" type="text" class="form-control" value=<%= eachMed.medName %>></td>
+                            <td> <input name="medDosage" type="text" class="form-control" value=<%= eachMed.medDosage %>></td>
                             <td>                         
                               <!-- add event listener -->
-                              <button class="btn btn-danger"><i class="fa fa-close"></i></button>
+                              <button id="redButton" class="btn btn-danger"><i class="fa fa-close"></i></button>
                             </td>
                           </tr>
                         <% }); %>
@@ -78,14 +78,14 @@
 
                     <div>
                       <!-- save this properly in the model because it's not the right time, it's updating along with me -->
-                      <h5   style="font-weight:bold" class="text-info"> Severity: <%=  condition.severity %> </h5>
+                      <h5  id="severity"  style="font-weight:bold" class="text-info"> Severity: <%=  condition.severity %> </h5>
                       <h5  class="text-info"> Created On: <%= condition.createdOn %></h5>
                       <h5  class="text-info"> Last Updated: <%= condition.updatedLast %></h5>          
                      
                       <span>
-                       <button class="btn btn-info" id="updateCond">Update</button>    
+                       <button id="updateButton" class="btn btn-info">Update</button>      
                       
-                       <button id="delButton" class="btn btn-danger">Remove</i></button>  
+                       <button id="delButton" class="btn btn-danger">Remove</button>  
                       </span>
                    </div>
 
@@ -127,6 +127,19 @@
       return output;
     }
 
+// Removind rows
+    $("#bigTable button").each(function(idx, butt){
+        butt.addEventListener("click", function(e) {
+                  var rows = $("#bigTable tr");
+                  rows.each(function(idx, row){
+                    if($(row).find('button').is(butt)){
+                        $(row).remove();
+                    }
+                  })
+               }, false);
+    })
+
+
     $("#delButton").click(function(e){
       console.log("Delteddd")
       $.ajax({
@@ -135,15 +148,38 @@
           success: function(result) {
           }
       });
-    })
+    });
 
     $("#updateButton").click(function(e){
+      console.log("entered");
+      var medArr = [];
+      var rows = $("#bigTable tr");
+      rows.each(function(idx, row){
+        var singleMed = {};
+        singleMed.medName = $(row).find('input[name=medName]').val();
+        singleMed.medDosage = $(row).find('input[name=medDosage]').val();
+        if(Object.keys(singleMed).length > 0){
+          medArr.push(singleMed);
+        }
+      })
+
+      var postData = {};
+      postData.name = $('#condName').text().trim();
+      postData.medList = medArr;
+      postData.severity = $('#severity').text();
+      postData.updatedLast = Date.now;
+      console.log("POSTDATA" + JSON.stringify(postData) + "");
       $.ajax({
-          url: window.location.href,
-          type: 'DELETE',
-          success: function(result) {
-          }
-      });
-    })
+            url: window.location.href,
+            type: 'PUT',
+            data: JSON.stringify({"symptomList":postData}),
+            dataType: 'json',
+            contentType: 'application/json'
+        }).done(function(data){
+          console.log("POST SUCCESS" + data);
+        }).fail(function(data){
+            console.error("ERROR - Failed:" + data);
+        });
+    });
 
   </script>
