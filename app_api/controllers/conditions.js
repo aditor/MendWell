@@ -182,7 +182,6 @@ module.exports.conditionsReadOne = function (req, res) {
 };
 
 module.exports.conditionsUpdateOne= function (req, res) {
-	console.log("ENTERED update backend")
 	if(!req.params.conditionid){ sendJsonResponse(res, 404, {'message':'Not found, conditionid is required'})
 		return; 
 	}
@@ -198,7 +197,9 @@ module.exports.conditionsUpdateOne= function (req, res) {
 		    }
 			condition.name = req.body.name;
 			condition.severity = req.body.severity;
-			condition.updatedLast = Date.now;
+			condition.medList = req.body.medList;
+			// condition.updatedLast = Date.now();
+			console.log("all changed")
 			condition.save(function(err, condition) {
 				if (err) {
 					sendJsonResponse(res, 404, err);

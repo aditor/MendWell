@@ -115,30 +115,18 @@ module.exports.doAddCondition = function(req, res){
 }
 
 module.exports.doUpdateCondition = function(req, res){
+	console.log("ENTERED DOUPDATECONDITION");
 	var reqestOptions, path, postdata, medArray;
-	path = "/api/conditions";
 
-	var input = req.body.condInfo;
-	var conditionName = input.shift();
+	path = "/api/conditions/" + req.params.conditionid;
 
-	var medArr = [];
-	input.forEach(function(item){
-		medArr.push({
-			medName: item,
-		    medDosage: "3"
-		})
-	})
-
-	var postdata = {
-		name: conditionName,
-		medList: medArr,
-		severity: 9
-	}
+	console.log(path + "here is path")
+	console.log(req.body)
 
 	requestOptions = {
 		url: apiOptions.server + path,
 		method: "PUT",
-		json: postdata
+		json: req.body
 	}
 
 	request(
@@ -147,9 +135,8 @@ module.exports.doUpdateCondition = function(req, res){
 			if(err){
 				console.log(err);
 			}
-			if(response.statusCode === 201){
-				// Redirect to details page if added successfully
-				res.redirect('/');
+			if(response.statusCode === 200){
+				//res.redirect('/condition/' + req.params.conditionid);
 			}
 		}
 	)
@@ -173,7 +160,7 @@ module.exports.doDeleteCondition = function(req, res){
 			}
 			if(response.statusCode === 201){
 				// Redirect to details page if added successfully
-				res.redirect('../../');
+				res.redirect('/');
 			}
 		}
 	)
