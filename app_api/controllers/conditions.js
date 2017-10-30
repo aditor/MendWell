@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Condition = mongoose.model('Condition');
 var request = require('request');
 var osmosis = require('osmosis');
+var Promise = require('promise');
 
 var appId = 'a0688df7';
 var appKey = 'b12e2d04580c6ecfc40c89764e2eaf32';
@@ -12,28 +13,45 @@ var sendJsonResponse = function(res, status, content) {
 	res.json(content);
 };
 
-var listRelated = function(res, ailment) {
-	var resultArr = [];
-	var formattedQuery = ailment.replace(/ /g,"&");
-	osmosis
-		.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + formattedQuery)
-		.find('p + ul')
-		.then(function(context, data, next) {
-		  var items = context.find('li');
-		  var last = [];
-		  items.forEach(function(item) {
-		        next(item, data)
-		  })
-		  console.log(items);
+var listRelated = function(res, ailmentList) {
+	var finalArr = [];
+
+	var PromiseList = ailmentList.map((item) => {
+		return new Promise((resolve, reject) => {
+			var resultArr = [];
+			var ailment = item.common_name;
+			var formattedQuery = ailment.replace(/ /g,"&");
+			osmosis
+				.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + formattedQuery)
+				.find('p + ul')
+				.then(function(context, data, next) {
+				  var items = context.find('li');
+				  var last = [];
+				  items.forEach(function(item) {
+				        next(item, data)
+				  })
+				  //console.log(items);
+				})
+				.set({'name': osmosis.set('name'),'link':'@href'})
+				.data(function(results) { //output
+				     resultArr.push(results)
+				 })
+				.done(function(){
+					resolve(resultArr);
+					//console.log(resultArr)
+				});
+
 		})
-		.set({'name': osmosis.set('name'),'link':'@href'})
-		.data(function(results) { //output
-		     resultArr.push(results)
-		 })
-		.done(function(){
-			console.log(resultArr)
-			sendJsonResponse(res, 200, resultArr)	
-		});
+	});
+
+	Promise.all(PromiseList).then(function(data){
+		console.log("lmao" + JSON.stringify(data));
+	})
+
+
+	// console.log("FINALARR" + finalArr);
+	sendJsonResponse(res, 200, finalArr)	
+	
 }
 
 module.exports.createMedList = function (req, res, ailment) {
@@ -56,7 +74,7 @@ module.exports.createMedList = function (req, res, ailment) {
 module.exports.translateSymptoms = function(req, res){
 	var reqparams = req.body["symptomList"];
 	reqparams = reqparams.join(" ");
-	console.log(reqparams);
+	console.log("SYMPTOMLIST" + reqparams);
 
 	var options = {
 	  url: 'https://api.infermedica.com/v2/parse', 
@@ -74,7 +92,18 @@ module.exports.translateSymptoms = function(req, res){
 	        // Print out the response body
 	        console.log("Mentions")
 	        console.log(JSON.stringify(body));
-	        var symp = body[Object.keys(body)[0]][0].id;
+
+	        var evidenceList = [];
+
+	        body.mentions.forEach(function(medItem){
+	        	evidenceList.push({
+	        		"id": medItem.id,
+	        		"choice_id": medItem.choice_id
+	        	})
+	        })
+
+	        console.log(evidenceList);
+
 			var options2 = {
 			  url: 'https://api.infermedica.com/v2/diagnosis',
 			  method: 'POST',
@@ -87,17 +116,20 @@ module.exports.translateSymptoms = function(req, res){
 			  	// Get these values from user and also enable multiple symptom entry
 							"sex": "male",
 						    "age": 30,
-						    "evidence": [
-						      {"id": symp, "choice_id": "present"}
-						    ] 
+						    "evidence": evidenceList
 						}
 			};
-			request(options, function (error, response, body) {
+			request(options2, function (error, response, body) {
 			    if (!error && response.statusCode == 200) {
 			        // Print out the response body
-			        	var condName = body["mentions"][0]["name"];
+			        	console.log("BODY" + JSON.stringify(body.conditions));
+
+			        	listRelated(res, body.conditions);
+			        
+
+			        	/*var condName = body["mentions"][0]["name"];
 			        	console.log(condName)
-			        	listRelated(res, condName)
+			        	listRelated(res, condName)*/
 			    }
 			})
 	    }
