@@ -21,6 +21,7 @@ var listRelated = function(res, ailmentList) {
 			var resultArr = [];
 			var ailment = item.common_name;
 			var formattedQuery = ailment.replace(/ /g,"&");
+			console.log("queryyyyy " + formattedQuery);
 			osmosis
 				.get('http://www.webmd.com/drugs/2/search?type=conditions&query=' + formattedQuery)
 				.find('p + ul')
@@ -30,28 +31,24 @@ var listRelated = function(res, ailmentList) {
 				  items.forEach(function(item) {
 				        next(item, data)
 				  })
-				  //console.log(items);
+				  console.log("fuckshit" + items);
 				})
 				.set({'name': osmosis.set('name'),'link':'@href'})
 				.data(function(results) { //output
-				     resultArr.push(results)
+				    resultArr.push(results)
 				 })
 				.done(function(){
-					resolve(resultArr);
-					//console.log(resultArr)
+					resolve({category: ailment, payLoad: resultArr});
+					console.log("RESULT: " + resultArr);
 				});
 
 		})
 	});
 
 	Promise.all(PromiseList).then(function(data){
-		console.log("lmao" + JSON.stringify(data));
-	})
-
-
-	// console.log("FINALARR" + finalArr);
-	sendJsonResponse(res, 200, finalArr)	
-	
+		finalArr.push(data);
+	    sendJsonResponse(res, 200, finalArr);	
+	})	
 }
 
 module.exports.createMedList = function (req, res, ailment) {
